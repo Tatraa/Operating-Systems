@@ -1,0 +1,22 @@
+Proces macierzysty:
+   |     PID: 3916      PPID: 2970      PGID: 3916
+   |
+   |--------Proces potomny: (1.fork)              PID: 3917       PPID: 3916      PGID: 3916
+   |     	  |	
+   |		  |
+   |		  |---------Proces potomny: (2.fork)               PID: 3918       PPID: 3917      PGID: 3916
+   |     	  |	    	  |	    
+   |          	  |              |			
+   |		  |		  |---------Proces potomny: (3.fork)            PID: 3919       PPID: 3918          PGID: 3916
+   |     	  |		 			        
+   |             |
+   |		  |---------Proces potomny: (3.frok)           PID: 3920       PPID: 3917      PGGID: 3916
+   |    			 	
+   |
+   |--------Proces potomny: (2.fork)    PID: 3921       PPID: 3916      PGGID: 3916
+   |    	  |
+   |             |
+   |		  |---------Proces potomny: (3.fork)        PID: 3922       PPID: 3921      PGGID: 3916
+   |   				 
+   |--------Proces potomny: (3.fork)             PID: 3924       PPID: 3916      PGGID: 3916
+        		
