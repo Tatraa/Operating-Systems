@@ -1,0 +1,61 @@
+// Pseudokod dla problemu Producenta i Konsumenta
+
+#define NELE ? // Rozmiar elementu bufora (jednostki towaru) w bajtach
+#define NBUF ? // Liczba elementow bufora
+
+typdef struct {
+    Towar bufor[NBUF][NELE]];              // Bufor mogacy pomiescic N jednostek towaru (P oznacza ilość producentów
+    int zapis, odczyt;              // Pozycje wstawiania oraz wyjmowania z bufora 
+} Towar;                        // Stuct
+
+semaphore PROD = NBUF;          // Semafor do wstrzymywania Producenta
+semaphore KONS = 0;          // Semafor do wstrzymywania Konsumenta
+semaphore ZAPIS = 1;
+semaphore ODCZYT = 1;
+
+int prodPGID;          // PGID grupy procesów producent
+int konsPGID;          // PGID grupy procesów konsument
+
+// Producent ----
+
+STOPSIGNAL() {                     // jesli odebrano sygnal STOP zatrzymaj program
+    exit();                   
+}
+
+Towar towarProd;
+
+while (1) {
+                                         // Produkcja towaru
+    NELE(PROD);                             // Opusc semafor Producenta
+    NELE(ZAPIS);
+    while(wartosc_semafor(KONS) == NBUF);  // przepelnienie bufora, czekaj na wolne miejsce
+        wstaw = (wstaw + 1) % NBUF;               // Przesun pozycje wstawiania o 1 dalej
+    V(ZAPIS);
+    towarProd = czytaj(plik);            // czytaj towar z pliku
+    if (towarProd = null) {              // jesli nie ma nic wiecej do odczytania wyslij sygnal końca produkcji do wszystkich producentów
+        kill (STOPSIGNAL, prodPGID);    
+    }
+    bufor[wstaw] = towarProd;   // Umiesc towar w buforze
+    V(KONS);                    // Podniesc semafor Konsumenta
+}
+
+// Konsument ---
+
+STOPSIGNAL() {                       // jesli odebrano sygnał STOP
+    exit();                     // zatrzymaj program
+}
+
+Towar towarKons;
+
+while(1) {
+    NELE(KONS);    
+    NELE(ODCZYT);                       // Opusc semafor Konsumenta
+    towarKons = bufor[wyjmij];         // Umiesc towar w buforze
+    if (bufor == STOPSIGNAL) {               // sprawdz czy w buforze umieszczono kod STOPSIGNAL
+        kill (STOP, konsPGID);  // wyslij sygnal konca konsumpcji do wszystkich konsumentow
+    }
+    wyjmij = (wyjmij + 1) % NBUF;         // Przesun pozycje wstawiania o 1 dalej
+    V(ODCZYT);
+    V(PROD);                           // Podniesc semafor Producenta
+                                       // Towar jest konsumowany 
+}
